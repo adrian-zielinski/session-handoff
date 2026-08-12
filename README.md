@@ -34,6 +34,18 @@ Pod koniec pracy piszesz `/handoff`. Sesja dopisuje swój wkład do pliku **wła
 
 Plik tematu to żywy dokument, nie log. Przy zapisie sesja aktualizuje sekcje, usuwa to, co się zdezaktualizowało, i dokłada jedną linię do dziennika. Decyzje z uzasadnieniem zostają najdłużej, bo to one są know-how.
 
+## Czym to się różni od handoffów per sesja
+
+Zapisywanie kontekstu na koniec sesji to znany pomysł i większość rozwiązań robi to tak samo: koniec pracy, nowy plik `2026-08-12-refaktor-api.md`, następnym razem kolejny. Sam tak miałem przez pół roku. Po dwóch miesiącach leży 40 plików, ta sama decyzja występuje w pięciu wersjach z różnych tygodni, a nowa sesja nie wie, który plik otworzyć. Zwykle nie otwiera żadnego.
+
+Tutaj plik należy do **tematu, nie do dnia**. Sesja dopisuje się do pliku istniejącego tematu: aktualizuje stan, usuwa to, co przestało obowiązywać, dokłada jedną linię do dziennika. Liczba plików rośnie z liczbą tematów w projekcie, a nie z liczbą sesji. Plik tematu jest zawsze najświeższą wersją wiedzy, nie archiwum, po które trzeba kopać.
+
+Trzy rzeczy pilnują, żeby to się nie rozjechało:
+
+1. **`INDEX.md` czytany zawsze pierwszy.** Mówi, jakie tematy istnieją i czym się różnią, więc sesja nie zakłada trzeciego pliku o tym samym.
+2. **Temat dobierany po mechanizmie pracy, nie po nazwie sesji.** „Poprawa głosówek" trafia do tematu `elevenlabs`, choć nikt nie wymówił tego słowa.
+3. **Limit około 150 linii.** Wymusza kondensację. Wtedy wychodzi, co jest know-how (decyzje z uzasadnieniem, ślepe uliczki), a co było tylko stanem na wtorek.
+
 ## Instalacja
 
 ### Wariant A: plugin (zalecany)

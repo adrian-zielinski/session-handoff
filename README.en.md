@@ -34,6 +34,18 @@ When you wrap up, you run `/handoff`. The session appends its contribution to th
 
 A topic file is a living document, not a log. On save the session updates sections, deletes what went stale, and adds one line to the journal. Decisions with their reasoning survive longest, because that is the actual know-how.
 
+## How this differs from per-session handoffs
+
+Saving context at the end of a session is a known idea, and most takes on it work the same way: you finish, you write `2026-08-12-api-refactor.md`, next time you write another one. I ran that setup for half a year. After two months you have 40 files, the same decision appears in five versions from five different weeks, and a new session has no idea which one to open. Usually it opens none.
+
+Here a file belongs to a **topic, not a date**. The session appends to the existing topic file: updates the state, deletes what stopped being true, adds one line to the journal. File count grows with the number of topics in the project, not with the number of sessions. The topic file always holds the current version of the knowledge instead of an archive you have to dig through.
+
+Three things keep it from drifting:
+
+1. **`INDEX.md` gets read first, always.** It states which topics exist and how they differ, so the session never opens a third file about the same thing.
+2. **Topics get matched by the mechanism of the work, not the session title.** "Fix the voice notes" lands in `elevenlabs` even though nobody said that word.
+3. **A soft 150-line limit.** It forces condensation, and condensation is what separates know-how (decisions with reasons, dead ends) from what was merely true on a Tuesday.
+
 ## Install
 
 ### Option A: plugin (recommended)
