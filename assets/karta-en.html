@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>session-handoff</title>
+<style>
+  :root{
+    --ink:#132030;
+    --ink-2:#1B2C3F;
+    --rule:#2C3F55;
+    --paper:#F3EEE4;
+    --paper-edge:#DED6C6;
+    --paper-old:#B9B2A4;
+    --tab:#E4602F;
+    --tab-deep:#C24A1E;
+    --sea:#3E7F70;
+    --dim:#7E90A2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1600px;height:900px;overflow:hidden}
+  body{
+    background:
+      radial-gradient(1200px 700px at 22% -10%, #1C2F44 0%, transparent 60%),
+      var(--ink);
+    font-family:"Futura","Avenir Next",Helvetica,sans-serif;
+    color:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;
+    padding:52px 64px 44px;
+  }
+
+  /* ---------- nagłówek ---------- */
+  header{display:flex;align-items:baseline;gap:22px;flex:0 0 auto}
+  .eyebrow{
+    font-size:13px;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--dim);font-weight:500;
+  }
+  h1{
+    font-family:"American Typewriter","Courier New",monospace;
+    font-size:44px;font-weight:600;letter-spacing:-.01em;line-height:1;
+  }
+  h1 .slash{color:var(--tab)}
+  .lede{
+    margin-left:auto;text-align:right;font-size:17px;line-height:1.45;
+    color:#B9C6D2;max-width:430px;font-weight:400;
+  }
+
+  /* ---------- scena ---------- */
+  .stage{
+    flex:1;display:grid;
+    grid-template-columns:1fr 80px 1.52fr;
+    align-items:stretch;margin-top:34px;
+  }
+  .col{display:flex;flex-direction:column}
+  .col-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .num{
+    font-family:"American Typewriter",monospace;font-size:13px;
+    color:var(--dim);letter-spacing:.1em;
+  }
+  .col-title{font-size:26px;font-weight:500;letter-spacing:.005em}
+  .col-note{font-size:15.5px;color:#93A5B6;margin-bottom:22px;line-height:1.4}
+  .col-note b{color:#D6DFE7;font-weight:500}
+
+  /* ---------- lewa: stos kartek ---------- */
+  .folder{
+    font-family:Menlo,monospace;font-size:13px;color:#6C7F91;
+    margin-bottom:10px;letter-spacing:-.01em;
+  }
+  .heap{position:relative;flex:1}
+  .card{
+    position:absolute;left:0;width:340px;height:46px;
+    background:var(--paper-old);border-radius:2px;
+    box-shadow:0 6px 14px rgba(0,0,0,.34);
+    display:flex;align-items:center;padding:0 16px;gap:10px;
+    font-family:Menlo,monospace;font-size:14px;color:#3A3730;
+  }
+  .card::before{
+    content:"";width:7px;height:7px;border-radius:50%;
+    background:#8C8578;flex:0 0 auto;
+  }
+  .card .date{opacity:.72}
+  .stack-label{
+    position:absolute;left:364px;top:150px;width:172px;
+    font-size:14.5px;line-height:1.5;color:#8496A7;
+  }
+  .stack-label .big{
+    display:block;font-family:"American Typewriter",monospace;
+    font-size:34px;color:#C3CEd8;line-height:1.1;margin-bottom:4px;
+  }
+
+  /* ---------- środek: przejście ---------- */
+  .bridge{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+  .bridge .line{width:1px;flex:1;background:linear-gradient(var(--rule),transparent)}
+  .bridge .arrow{
+    width:46px;height:46px;border-radius:50%;
+    border:1px solid var(--rule);
+    display:grid;place-items:center;color:var(--tab);font-size:19px;
+    background:var(--ink-2);
+  }
+
+  /* ---------- prawa: segregator z zakładkami ---------- */
+  .binder{position:relative;flex:1;display:flex}
+  .tabs{
+    position:absolute;left:592px;top:0;display:flex;flex-direction:column;gap:9px;z-index:3;
+  }
+  .tab{
+    width:166px;height:38px;border-radius:0 4px 4px 0;
+    background:#25384C;border:1px solid #31485F;border-left:none;
+    display:flex;align-items:center;padding-left:15px;gap:9px;
+    font-family:Menlo,monospace;font-size:13px;color:#A9BACA;
+  }
+  .tab i{width:6px;height:6px;border-radius:50%;background:var(--dim);flex:0 0 auto}
+  .tab.live{background:var(--tab);border-color:var(--tab-deep);color:#2A1206;font-weight:600;width:190px}
+  .tab.live i{background:#5E240C}
+  .tab.done i{background:var(--sea)}
+
+  .sheet{
+    position:relative;z-index:4;width:600px;
+    background:var(--paper);color:#26221C;border-radius:3px;
+    box-shadow:0 26px 48px rgba(0,0,0,.42);
+    padding:24px 28px 22px;display:flex;flex-direction:column;
+    background-image:repeating-linear-gradient(
+      to bottom, transparent 0 33px, rgba(19,32,48,.055) 33px 34px);
+  }
+  .sheet-top{
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1.5px solid #26221C;padding-bottom:9px;margin-bottom:14px;
+  }
+  .fname{font-family:Menlo,monospace;font-size:17px;letter-spacing:-.01em}
+  .badge{
+    font-family:Menlo,monospace;font-size:11.5px;letter-spacing:.06em;
+    border:1px solid var(--tab-deep);color:var(--tab-deep);
+    padding:3px 8px;border-radius:2px;text-transform:uppercase;
+  }
+  .sec{margin-bottom:13px}
+  .sec h3{
+    font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:#7A7264;font-weight:600;margin-bottom:5px;
+  }
+  .sec p,.sec li{font-size:15.5px;line-height:1.5;color:#26221C}
+  .sec ul{list-style:none}
+  .sec li{padding-left:22px;position:relative;margin-bottom:2px}
+  .sec li span{position:absolute;left:0;font-size:13px}
+  .sec.stop h3{color:var(--tab-deep)}
+  .sec.stop p{color:#4A423A}
+  .journal{
+    margin-top:auto;padding-top:11px;border-top:1px solid #D4CCBC;
+    font-family:Menlo,monospace;font-size:12.5px;color:#8A8071;
+    display:flex;gap:16px;
+  }
+
+  /* ---------- stopka ---------- */
+  footer{
+    flex:0 0 auto;margin-top:26px;padding-top:18px;
+    border-top:1px solid var(--rule);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .cmds{display:flex;gap:26px;font-family:Menlo,monospace;font-size:16px;color:#B9C6D2}
+  .cmds b{color:var(--tab);font-weight:600}
+  .repo{font-family:Menlo,monospace;font-size:15px;color:#7E90A2}
+  .repo b{color:#D6DFE7;font-weight:400}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">a claude code skill</div>
+    <h1><span class="slash">/</span>session-handoff</h1>
+  </div>
+  <p class="lede">Session context saved so your tenth session<br>starts smarter than your first.</p>
+</header>
+
+<div class="stage">
+
+  <!-- LEWA -->
+  <section class="col">
+    <div class="col-head"><span class="num">HOW EVERYONE DOES IT</span></div>
+    <div class="col-title" style="margin-bottom:6px">one file per session</div>
+    <p class="col-note">Every wrap-up leaves one more card, stamped <b>with a date</b>.</p>
+    <div class="folder">session-logs/</div>
+    <div class="heap">
+      <div class="card" style="top:0;transform:rotate(-1.1deg);opacity:.97"><span class="date">2026-08-12-api-refactor.md</span></div>
+      <div class="card" style="top:52px;left:12px;transform:rotate(.7deg);opacity:.88"><span class="date">2026-08-09-grok-cache.md</span></div>
+      <div class="card" style="top:104px;left:5px;transform:rotate(-.5deg);opacity:.78"><span class="date">2026-08-07-api-refactor.md</span></div>
+      <div class="card" style="top:156px;left:18px;transform:rotate(1.3deg);opacity:.66"><span class="date">2026-08-02-grok-cache.md</span></div>
+      <div class="card" style="top:208px;left:8px;transform:rotate(-.9deg);opacity:.54"><span class="date">2026-07-29-api-refactor.md</span></div>
+      <div class="card" style="top:260px;left:22px;transform:rotate(.4deg);opacity:.42"><span class="date">2026-07-24-webhooks.md</span></div>
+      <div class="card" style="top:312px;left:11px;transform:rotate(-1.4deg);opacity:.3"><span class="date">2026-07-18-grok-cache.md</span></div>
+      <div class="card" style="top:364px;left:26px;transform:rotate(.9deg);opacity:.2"><span class="date">2026-07-15-api-refactor.md</span></div>
+      <div class="card" style="top:416px;left:14px;transform:rotate(-.6deg);opacity:.12"><span class="date">2026-07-11-webhooks.md</span></div>
+      <div class="card" style="top:468px;left:24px;transform:rotate(1.1deg);opacity:.06"><span class="date">2026-07-06-grok-cache.md</span></div>
+      <div class="stack-label">
+        <span class="big">40</span>
+        cards after two months. The same decision in five versions.
+      </div>
+    </div>
+  </section>
+
+  <!-- MOST -->
+  <div class="bridge">
+    <div class="line"></div>
+    <div class="arrow">→</div>
+    <div class="line" style="background:linear-gradient(transparent,var(--rule))"></div>
+  </div>
+
+  <!-- PRAWA -->
+  <section class="col">
+    <div class="col-head"><span class="num">HOW THIS SKILL DOES IT</span></div>
+    <div class="col-title" style="margin-bottom:6px">one file per topic</div>
+    <p class="col-note">The session appends to an <b>existing topic</b> and deletes what went stale.</p>
+
+    <div class="binder">
+      <div class="sheet">
+        <div class="sheet-top">
+          <span class="fname">HANDOFF/elevenlabs.md</span>
+          <span class="badge">in-progress · 12 aug</span>
+        </div>
+
+        <div class="sec">
+          <h3>Current state</h3>
+          <ul>
+            <li><span>✓</span>API integration live in production</li>
+            <li><span>◐</span>voice pick: two candidates left</li>
+            <li><span>✕</span>PVC clone blocked on 30 min of client audio</li>
+          </ul>
+        </div>
+
+        <div class="sec">
+          <h3>Key decisions</h3>
+          <p>IVC over PVC to start: PVC needs 30 min of material, IVC needs one.</p>
+        </div>
+
+        <div class="sec">
+          <h3>Next step</h3>
+          <p>Compare the two voices on the same five sentences and pick one.</p>
+        </div>
+
+        <div class="sec stop">
+          <h3>What NOT to do</h3>
+          <p>Do not revisit local synthesis. Tested in July, quality unacceptable.</p>
+        </div>
+
+        <div class="sec">
+          <h3>Artifacts</h3>
+          <p style="font-family:Menlo,monospace;font-size:13px;color:#4A423A;line-height:1.6">
+            docs/voice-analysis.md · src/voice/tts-client.ts<br>branch feat/voice-tts @ a1b2c3d
+          </p>
+        </div>
+
+        <div class="journal">
+          <span>journal</span>
+          <span>12 Aug first voice notes live</span>
+          <span>·</span>
+          <span>07 Aug vendor picked</span>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab live"><i></i>elevenlabs.md</div>
+        <div class="tab"><i></i>follow-ups.md</div>
+        <div class="tab done"><i></i>onboarding.md</div>
+        <div class="tab"><i></i>calendar.md</div>
+        <div class="tab" style="background:#1E2E40;color:#8496A7"><i style="background:#4A5F74"></i>INDEX.md</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="cmds">
+    <span><b>/handoff</b> saves the topic</span>
+    <span><b>/pickup</b> resumes it a week later</span>
+  </div>
+  <div class="repo">MIT · github.com/adrian-zielinski/<b>session-handoff</b></div>
+</footer>
+
+</body>
+</html>

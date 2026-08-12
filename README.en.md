@@ -10,6 +10,10 @@
   <a href="README.md">🇵🇱 Polski</a> · 🇬🇧 <b>English</b>
 </p>
 
+<p align="center">
+  <img src="assets/session-handoff-en.png" alt="Left: a stack of dated cards in session-logs. Right: the HANDOFF/elevenlabs.md topic file with index tabs" width="100%">
+</p>
+
 ---
 
 ## The problem

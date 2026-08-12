@@ -10,6 +10,10 @@
   🇵🇱 <b>Polski</b> · <a href="README.en.md">🇬🇧 English</a>
 </p>
 
+<p align="center">
+  <img src="assets/session-handoff-pl.png" alt="Po lewej stos kartek z datami z folderu session-logs, po prawej plik tematu HANDOFF/elevenlabs.md z zakładkami tematów" width="100%">
+</p>
+
 ---
 
 ## Problem
