@@ -1,0 +1,21 @@
+{
+  "name": "session-handoff",
+  "description": "Topic-based memory between Claude Code sessions. /handoff writes what the session learned into a per-topic file under HANDOFF/, /pickup resumes a topic in a fresh session with full context.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Adrian Zieliński",
+    "url": "https://github.com/adrian-zielinski"
+  },
+  "homepage": "https://github.com/adrian-zielinski/session-handoff",
+  "repository": "https://github.com/adrian-zielinski/session-handoff",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "handoff",
+    "context",
+    "memory",
+    "sessions",
+    "workflow",
+    "skill"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "session-handoff",
+  "owner": {
+    "name": "Adrian Zieliński",
+    "url": "https://github.com/adrian-zielinski"
+  },
+  "metadata": {
+    "description": "Session Handoff — topic-based memory between Claude Code sessions",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "session-handoff",
+      "description": "Topic-based memory between Claude Code sessions. /handoff saves the session's context into a per-topic file under HANDOFF/, /pickup resumes a topic in a fresh session.",
+      "source": "./",
+      "strict": false
+    }
+  ]
+}
